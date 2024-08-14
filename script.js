@@ -43,11 +43,31 @@ function game() {
   );
 
   let playAgain = true;
+  let gameIsCanceled = false;
   while (playAgain) {
+    gameIsCanceled = false
     for (let i = 0; i < 5; i++) {
-      const playerSelection = prompt(
-        "Round " + (i + 1) + ": Choose Rock, Paper or Scissors:"
-      );
+      let playerSelection;
+      while (true) {
+        playerSelection = prompt(
+          "Round " + (i + 1) + ": Choose Rock, Paper or Scissors:"
+        );
+        if (playerSelection === null) {
+          alert("Game cancelled. The world is in danger!");
+          gameIsCanceled = true;
+          break;
+        }
+        if (
+          ["rock", "paper", "scissors"].includes(playerSelection.toLowerCase())
+        ) {
+          break;
+        } else {
+          alert("Invalid choice. Please enter Rock, Paper, or Scissors.");
+        }
+      }
+      if (gameIsCanceled) {
+        break;
+      }
       const computerSelection = computerPlay();
       const result = playRound(playerSelection, computerSelection);
 
@@ -68,24 +88,36 @@ function game() {
         `Current Score: You ${playerScore} - Computer ${computerScore}`
       );
     }
-
-    // final score and who won
-    if (playerScore > computerScore) {
-      console.log(
-        `Congratulations, hero! You have defeated the villainous AI! Final score: ${playerScore} to ${computerScore}`
-      );
-    } else if (computerScore > playerScore) {
-      console.log(
-        `Oh no! The villainous AI has won this time. Final score: ${computerScore} to ${playerScore}. Try again to save the world!`
+    if (gameIsCanceled) {
+      playAgain = confirm(
+        "Do you want to play again and continue the fight against the villainous AI?"
       );
     } else {
-      console.log(
-        `It's a tie! The battle continues. Final score: ${playerScore} to ${computerScore}`
+      // final score and who won
+      if (playerScore > computerScore) {
+        console.log(
+          `Congratulations, hero! You have defeated the villainous AI! Final score: ${playerScore} to ${computerScore}`
+        );
+      } else if (computerScore > playerScore) {
+        console.log(
+          `Oh no! The villainous AI has won this time. Final score: ${computerScore} to ${playerScore}. Try again to save the world!`
+        );
+      } else {
+        console.log(
+          `It's a tie! The battle continues. Final score: ${playerScore} to ${computerScore}`
+        );
+      }
+      playAgain = confirm(
+        "Do you want to play again and continue the fight against the villainous AI?"
       );
     }
-    playAgain = confirm(
-      "Do you want to play again and continue the fight against the villainous AI?"
+  }
+  if (!gameIsCanceled) {
+    console.log(
+      "Thank you for playing, brave hero! The world is safe for now."
     );
   }
-  console.log("Thank you for playing, brave hero! The world is safe for now.");
 }
+
+// Start the game
+game();
