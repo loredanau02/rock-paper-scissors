@@ -45,6 +45,8 @@ function game() {
   let playAgain = true;
   let gameIsCanceled = false;
   while (playAgain) {
+    playerScore = 0
+    computerScore = 0
     gameIsCanceled = false
     for (let i = 0; i < 5; i++) {
       let playerSelection;
