@@ -1,11 +1,21 @@
-// Function to get computer's play
+/**
+ * Generates a random choice for the computer.
+ * 
+ * @returns {string} The computer's choice: "Rock", "Paper", or "Scissors".
+ */
 function computerPlay() {
   const choices = ["Rock", "Paper", "Scissors"];
   const randomChoice = choices[Math.floor(Math.random() * choices.length)];
   return randomChoice;
 }
 
-// Function to play a single round
+/**
+ * Plays a single round of Rock, Paper, Scissors.
+ * 
+ * @param {string} playerSelection - The player's choice.
+ * @param {string} computerSelection - The computer's choice.
+ * @returns {string} The result of the round.
+ */
 function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toLowerCase();
   computerSelection = computerSelection.toLowerCase();
@@ -29,96 +39,105 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// Helper function to capitalize the first letter
+/**
+ * Capitalizes the first letter of a word.
+ * 
+ * @param {string} word - The word to be capitalized.
+ * @returns {string} The word with the first letter capitalized.
+ */
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-function game() {
+/**
+ * Prompts the player to make a selection and validates the input.
+ * 
+ * @param {number} round - The current round number.
+ * @returns {string|null} The player's selection or null if the game is cancelled.
+ */
+function getPlayerSelection(round) {
+  let playerSelection;
+  while (true) {
+    playerSelection = prompt(
+      "Round " + round + ": Choose Rock, Paper or Scissors:"
+    );
+    if (playerSelection === null) {
+      alert("Game cancelled. The world is in danger!");
+      return null;
+    }
+    if (["rock", "paper", "scissors"].includes(playerSelection.toLowerCase())) {
+      return playerSelection;
+    } else {
+      alert("Invalid choice. Please enter Rock, Paper, or Scissors.");
+    }
+  }
+}
+
+/**
+ * Plays a single game of 5 rounds.
+ */
+function playGame() {
   let playerScore = 0;
   let computerScore = 0;
 
+  for (let i = 0; i < 5; i++) {
+    const playerSelection = getPlayerSelection(i + 1);
+    if (playerSelection === null) {
+      return; // Game was cancelled
+    }
+    const computerSelection = computerPlay();
+    const result = playRound(playerSelection, computerSelection);
+
+    console.log(
+      `Round ${i + 1}: You chose ${capitalize(
+        playerSelection
+      )}, Computer chose ${capitalize(computerSelection)}.`
+    );
+    console.log(result);
+
+    if (result.startsWith("You Win")) {
+      playerScore++;
+    } else if (result.startsWith("You Lose")) {
+      computerScore++;
+    }
+    // score report after every round
+    console.log(
+      `Current Score: You ${playerScore} - Computer ${computerScore}`
+    );
+  }
+
+  // final score and who won
+  if (playerScore > computerScore) {
+    console.log(
+      `Congratulations, hero! You have defeated the villainous AI! Final score: ${playerScore} to ${computerScore}`
+    );
+  } else if (computerScore > playerScore) {
+    console.log(
+      `Oh no! The villainous AI has won this time. Final score: ${computerScore} to ${playerScore}. Try again to save the world!`
+    );
+  } else {
+    console.log(
+      `It's a tie! The battle continues. Final score: ${playerScore} to ${computerScore}`
+    );
+  }
+}
+
+/**
+ * Main function to start and manage the game.
+ */
+function game() {
   console.log(
     "Welcome, brave hero! The villainous AI has challenged you to a game of Rock, Paper, Scissors. Win to save the world!"
   );
 
   let playAgain = true;
-  let gameIsCanceled = false;
   while (playAgain) {
-    playerScore = 0
-    computerScore = 0
-    gameIsCanceled = false
-    for (let i = 0; i < 5; i++) {
-      let playerSelection;
-      while (true) {
-        playerSelection = prompt(
-          "Round " + (i + 1) + ": Choose Rock, Paper or Scissors:"
-        );
-        if (playerSelection === null) {
-          alert("Game cancelled. The world is in danger!");
-          gameIsCanceled = true;
-          break;
-        }
-        if (
-          ["rock", "paper", "scissors"].includes(playerSelection.toLowerCase())
-        ) {
-          break;
-        } else {
-          alert("Invalid choice. Please enter Rock, Paper, or Scissors.");
-        }
-      }
-      if (gameIsCanceled) {
-        break;
-      }
-      const computerSelection = computerPlay();
-      const result = playRound(playerSelection, computerSelection);
-
-      console.log(
-        `Round ${i + 1}: You chose ${capitalize(
-          playerSelection
-        )}, Computer chose ${capitalize(computerSelection)}.`
-      );
-      console.log(result);
-
-      if (result.startsWith("You Win")) {
-        playerScore++;
-      } else if (result.startsWith("You Lose")) {
-        computerScore++;
-      }
-      // score report after every round
-      console.log(
-        `Current Score: You ${playerScore} - Computer ${computerScore}`
-      );
-    }
-    if (gameIsCanceled) {
-      playAgain = confirm(
-        "Do you want to play again and continue the fight against the villainous AI?"
-      );
-    } else {
-      // final score and who won
-      if (playerScore > computerScore) {
-        console.log(
-          `Congratulations, hero! You have defeated the villainous AI! Final score: ${playerScore} to ${computerScore}`
-        );
-      } else if (computerScore > playerScore) {
-        console.log(
-          `Oh no! The villainous AI has won this time. Final score: ${computerScore} to ${playerScore}. Try again to save the world!`
-        );
-      } else {
-        console.log(
-          `It's a tie! The battle continues. Final score: ${playerScore} to ${computerScore}`
-        );
-      }
-      playAgain = confirm(
-        "Do you want to play again and continue the fight against the villainous AI?"
-      );
-    }
-  }
-  if (!gameIsCanceled) {
-    console.log(
-      "Thank you for playing, brave hero! The world is safe for now."
+    playGame();
+    playAgain = confirm(
+      "Do you want to play again and continue the fight against the villainous AI?"
     );
   }
+  console.log("Thank you for playing, brave hero! The world is safe for now.");
 }
 
 // Start the game
