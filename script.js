@@ -1,25 +1,31 @@
 /**
+ * Displays a welcome message to the user.
+ */
+function welcome() {
+  alert(
+    "Welcome, brave hero! The villainous AI has challenged you to a game of Rock, Paper, Scissors. Win to save the world! The rest of the game can be viewed from the console. To open the console, press F12 or right-click and select 'Inspect', then go to the 'Console' tab."
+  );
+}
+
+/**
  * Generates a random choice for the computer.
- * 
+ *
  * @returns {string} The computer's choice: "Rock", "Paper", or "Scissors".
  */
 function computerPlay() {
-  const choices = ["Rock", "Paper", "Scissors"];
+  const choices = ["rock", "paper", "scissors"];
   const randomChoice = choices[Math.floor(Math.random() * choices.length)];
   return randomChoice;
 }
 
 /**
  * Plays a single round of Rock, Paper, Scissors.
- * 
+ *
  * @param {string} playerSelection - The player's choice.
  * @param {string} computerSelection - The computer's choice.
  * @returns {string} The result of the round.
  */
 function playRound(playerSelection, computerSelection) {
-  playerSelection = playerSelection.toLowerCase();
-  computerSelection = computerSelection.toLowerCase();
-
   if (playerSelection === computerSelection) {
     return "It's a tie!";
   }
@@ -41,7 +47,7 @@ function playRound(playerSelection, computerSelection) {
 
 /**
  * Capitalizes the first letter of a word.
- * 
+ *
  * @param {string} word - The word to be capitalized.
  * @returns {string} The word with the first letter capitalized.
  */
@@ -51,7 +57,7 @@ function capitalize(word) {
 
 /**
  * Prompts the player to make a selection and validates the input.
- * 
+ *
  * @param {number} round - The current round number.
  * @returns {string|null} The player's selection or null if the game is cancelled.
  */
@@ -65,7 +71,12 @@ function getPlayerSelection(round) {
       alert("Game cancelled. The world is in danger!");
       return null;
     }
-    if (["rock", "paper", "scissors"].includes(playerSelection.toLowerCase())) {
+    if (playerSelection === "") {
+      alert("Invalid choice. Please enter Rock, Paper, or Scissors. You cannot leave the selection empty.");
+      return null;
+    }
+    playerSelection = playerSelection.toLowerCase().trim();
+    if (["rock", "paper", "scissors"].includes(playerSelection)) {
       return playerSelection;
     } else {
       alert("Invalid choice. Please enter Rock, Paper, or Scissors.");
@@ -126,9 +137,7 @@ function playGame() {
  * Main function to start and manage the game.
  */
 function game() {
-  console.log(
-    "Welcome, brave hero! The villainous AI has challenged you to a game of Rock, Paper, Scissors. Win to save the world!"
-  );
+  welcome();
 
   let playAgain = true;
   while (playAgain) {
