@@ -73,6 +73,22 @@ function getPlayerSelection(round) {
   }
 }
 
+function displayFinalScore(playerScore, computerScore) {
+  if (playerScore > computerScore) {
+    console.log(
+      `Congratulations, hero! You have defeated the villainous AI! Final score: ${playerScore} to ${computerScore}`
+    );
+  } else if (computerScore > playerScore) {
+    console.log(
+      `Oh no! The villainous AI has won this time. Final score: ${computerScore} to ${playerScore}. Try again to save the world!`
+    );
+  } else {
+    console.log(
+      `It's a tie! Start your battle again and save the world. Final score: ${playerScore} to ${computerScore}`
+    );
+  }
+}
+
 /**
  * Plays a single game of 5 rounds.
  */
@@ -106,20 +122,7 @@ function playGame() {
     );
   }
 
-  // final score and who won
-  if (playerScore > computerScore) {
-    console.log(
-      `Congratulations, hero! You have defeated the villainous AI! Final score: ${playerScore} to ${computerScore}`
-    );
-  } else if (computerScore > playerScore) {
-    console.log(
-      `Oh no! The villainous AI has won this time. Final score: ${computerScore} to ${playerScore}. Try again to save the world!`
-    );
-  } else {
-    console.log(
-      `It's a tie! The battle continues. Final score: ${playerScore} to ${computerScore}`
-    );
-  }
+  displayFinalScore(playerScore, computerScore);
 }
 
 /**
