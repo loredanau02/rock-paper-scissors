@@ -83,7 +83,6 @@ function playGame() {
   for (let i = 0; i < 5; i++) {
     const playerSelection = getPlayerSelection(i + 1);
     if (playerSelection === null) {
-      alert("oh no you have cancelled the game :(")
       return; // Game was cancelled
     }
     const computerSelection = computerPlay();
